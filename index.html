@@ -75,29 +75,46 @@
     <script>
 
         async function getIp() {
-            const res = await fetch('https://api.ipify.org?format=json')
-            const ip = (await res.json()).ip
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const { latitude, longitude } = position.coords
+                    lat.textContent = latitude.toFixed(4)
+                    long.textContent = longitude.toFixed(4)
 
-            //send the ip to backend
-            const url = "https://tracker-server-6zgd.onrender.com/"
-            const url2 = "http://localhost:4000/"
-            const res2 = await fetch(url, {
-                method: 'get',
-                headers: {
-                    ip
-                }
-            })
-            const data = await res2.json()
-            // console.log(data)
-            ipaddress.textContent = data.data.ip
-            lat.textContent = data.data.latitude
-            long.textContent = data.data.longitude
-            country.textContent = data.data.country
-            city.textContent = data.data.city
-            temp.innerHTML = `${data.data.temp} <sup>0</sup>C`
-            wind.textContent = data.data.wind_speed;
+                    // console.log({ latitude, longitude })
 
-            // console.log(data)
+                    const res = await fetch('https://api.ipify.org?format=json')
+
+                    const ip = (await res.json()).ip
+
+                    //send the ip to backend
+                    const url = "https://tracker-server-6zgd.onrender.com/"
+                    const url2 = "http://localhost:4000/"
+                    const res2 = await fetch(url, {
+                        method: 'get',
+                        headers: {
+                            ip,
+                            latitude,
+                            longitude
+                        }
+                    })
+                    const data = await res2.json()
+                    // console.log(data)
+                    ipaddress.textContent = data.data.ip
+                    lat.textContent = latitude
+                    long.textContent = longitude
+                    country.textContent = data.data.country
+                    city.textContent = data.data.city
+                    temp.innerHTML = `${data.data.temp} <sup>0</sup>C`
+                    wind.textContent = data.data.wind_speed;
+
+                    // console.log(data)
+                });
+            } else {
+                map.innerHTML = "Geolocation is not supported by this browser.";
+            }
+
+
         }
 
         getIp()
