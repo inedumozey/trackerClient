@@ -78,8 +78,8 @@
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
                     const { latitude, longitude } = position.coords
-                    lat.textContent = latitude.toFixed(4)
-                    long.textContent = longitude.toFixed(4)
+                    lat.textContent = latitude
+                    long.textContent = longitude
 
                     // console.log({ latitude, longitude })
 
