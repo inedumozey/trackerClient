@@ -79,7 +79,8 @@
             const ip = (await res.json()).ip
 
             //send the ip to backend
-            const res2 = await fetch('http://localhost:4000/', {
+            const url = "https://tracker-server-6zgd.onrender.com/"
+            const res2 = await fetch(url, {
                 method: 'get',
                 headers: {
                     ip
